@@ -1,6 +1,7 @@
 ﻿body {
     padding-top: 50px;
     padding-bottom: 20px;
+    background: #efede3 url(/Content/Images/CS_604_BG.png) repeat 0 -5px;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -16,9 +17,18 @@
     white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+/*Log in Page Styles*/
+.btn-login{
+    font-size: 120%;
+    padding: 9px 20px;
+    margin: 0;
+    width: auto;
+    min-width: 120px;
+    border: 1px solid #bbb;
+    border-radius: 3px;
+    -webkit-box-shadow: 3px 3px 12px rgba(0,0,0,0.1);
+}
+.login-title{
+    font-weight: 900;
+    color: #444;
 }
