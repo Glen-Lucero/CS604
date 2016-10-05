@@ -1,0 +1,64 @@
+Problem #1
+
+int sum = 0;
+for (int num = 1; num < 1000; num++)
+{
+    if (((num % 3) == 0) || ((num % 5) == 0))
+    {
+        sum += num;
+    }
+}
+//Answer = 233,168
+
+
+Problem #2
+
+long onePrev = 1;
+long twoPrev = 1;
+long num = 0;
+long sum = 0;
+
+while (num < 4000000)
+{
+    if ((num % 2) == 0)
+    {
+        sum += num;
+    }
+    num = onePrev + twoPrev;
+    twoPrev = onePrev;
+    onePrev = num;
+}
+//Answer = 4,613,732
+
+
+Problem #3
+
+long num = 600851475143;
+long largestFactor = 0;
+long[] factors = new long[2];
+
+for (long i = 2; i * i < num; i++) //Only need to check up to sq rt
+{
+    if (num % i == 0) //Is a factor
+    {
+        factors[0] = i;
+        factors[1] = num / i;
+        for (int p = 0; p < 2; p++)
+        {
+	          bool isPrime = true;
+	          for (long r = 2; r * r < factors[p]; r++)
+	          {
+    	          if (factors[p] % r == 0)
+    	          {
+	                  isPrime = false;
+                    break;
+    	          }
+	          }
+	          if (isPrime && factors[p] > largestFactor)
+	          {
+		            largestFactor = factors[p];
+	          }
+        }
+    }
+}
+//Answer = 6,857
