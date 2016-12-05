@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Mvc;
+using WebApplication1.Models;
 
 namespace WebApplication1.Controllers.Tests
 {
@@ -21,8 +22,19 @@ namespace WebApplication1.Controllers.Tests
             Assert.AreEqual("Register", result.ViewName);
 
         }
+        // Test Login View
+        [TestMethod()]
+        public void LoginViewTest()
+        {
+            AccountController controllerTest = new AccountController();
+
+            ViewResult result = controllerTest.Login("Index") as ViewResult;
+
+            Assert.AreEqual("", result.ViewName);
+        }
+
         // Test the registration email confirmation stuff
-        [TestMethod]
+        [TestMethod()]
         public void ConfirmEmailTestFailure()
         {
             AccountController controllertest = new AccountController();
@@ -43,6 +55,29 @@ namespace WebApplication1.Controllers.Tests
 
             var result = controllerTest.Register(mockModel);
             **/
+        }
+
+        // Test Login
+        [TestMethod()]
+        public void LoginTest()
+        {
+            AccountController controllertest = new AccountController();
+
+            LoginViewModel model = new LoginViewModel()
+            {
+                Email = "glucero44@gmail.com",
+                Password = "Pa$$w0rd"
+            };
+
+            var returnUrl = "Index";
+
+            var result = controllertest.Login(model, returnUrl) as Task<ActionResult>;
+
+            var resultView = result.Result as ViewResult;
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(resultView.ViewName, "Index");
+
         }
     }
 }
