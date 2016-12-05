@@ -4,7 +4,7 @@
     ViewBag.Title = "SHU Wallet";
 }
 
-<h2 class="login-title"><img src="~/Content/Images/SHU_Logo.png" />@ViewBag.Title</h2>
+<h2 class="login-title"><img src="~/Content/Images/SHU_Logo.png" />@ViewBag.Title<img src="~/Content/Images/shucard.png" style="float:right" height="127" width="202"/></h2>
 <div class="row">
         <section id="loginForm" class="col-sm-6 col-sm-offset-3">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
