@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using System.Net;
 
 namespace WebApplication1.Controllers
 {
@@ -60,7 +61,7 @@ namespace WebApplication1.Controllers
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
+                //: message == ManageMessageId.PhoneSuccess ? "Your phone number was removed."
                 : "";
 
             var userId = User.Identity.GetUserId();
@@ -98,6 +99,61 @@ namespace WebApplication1.Controllers
             }
             return RedirectToAction("ManageLogins", new { Message = message });
         }
+
+        public ActionResult Delete()
+        {
+            return View();
+        }
+
+        // POST: /Users/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Delete(DeleteViewModel model)
+        {
+            //var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+
+            if (ModelState.IsValid)
+            {
+                if (User.Identity.GetUserId() == null)
+                {
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                }
+
+                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+                var logins = user.Logins;
+                var rolesForUser = await UserManager.GetRolesAsync(user.Id);
+
+                ApplicationDbContext context = new ApplicationDbContext();
+
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    foreach (var login in logins.ToList())
+                    {
+                        await UserManager.RemoveLoginAsync(login.UserId, new UserLoginInfo(login.LoginProvider, login.ProviderKey));
+                    }
+
+                    if (rolesForUser.Count() > 0)
+                    {
+                        foreach (var item in rolesForUser.ToList())
+                        {
+                            // item should be the name of the role
+                            var result = await UserManager.RemoveFromRoleAsync(user.Id, item);
+                        }
+                    }
+
+                    await UserManager.DeleteAsync(user);
+                    transaction.Commit();
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                return View();
+            }
+        }
+
 
         //
         // GET: /Manage/AddPhoneNumber

@@ -275,6 +275,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\Info.cshtml" />
     <Content Include="Views\Home\MyWallet.cshtml" />
+    <Content Include="Views\Manage\Delete.cshtml" />
+    <Content Include="Views\Account\DeleteConfirmation.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

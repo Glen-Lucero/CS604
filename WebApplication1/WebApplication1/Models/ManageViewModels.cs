@@ -58,6 +58,11 @@ namespace WebApplication1.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class DeleteViewModel
+    {
+ 
+    }
+
     public class AddPhoneNumberViewModel
     {
         [Required]
