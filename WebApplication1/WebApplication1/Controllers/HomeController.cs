@@ -15,12 +15,21 @@ namespace WebApplication1.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "Welcome to SHU Wallet!";
 
             return View();
         }
 
+        [Authorize]
         public ActionResult Contact()
+        {
+            ViewBag.Message = "Contact SHU Wallet";
+
+            return View();
+        }
+
+        [Authorize]
+        public ActionResult MyWallet()
         {
             ViewBag.Message = "Your contact page.";
 

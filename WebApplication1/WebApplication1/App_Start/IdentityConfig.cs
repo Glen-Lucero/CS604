@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using WebApplication1.Models;
+using System.Net.Mail;
 
 namespace WebApplication1
 {
@@ -19,25 +20,38 @@ namespace WebApplication1
         public Task SendAsync(IdentityMessage message)
         {        // Plug in your email service here to send an email.
             //var credentialUserName = "shucardservices@mail.sacredheart.com";
-            var sentFrom = "shucardservices@mail.sacredheart.edu";
+            //var sentFrom = "shucardservices@mail.sacredheart.edu";
             //var pwd = "ourpassword";
 
             // Configure the client:
-            System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("mail.sacredheart.edu");
+            //System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient("mail.sacredheart.edu");
+            //System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient();
+            //client.Port = 25;
+            //client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.PickupDirectoryFromIis;
+            //client.UseDefaultCredentials = false;
 
-            client.Port = 25;
-            client.DeliveryMethod = System.Net.Mail.SmtpDeliveryMethod.Network;
-            client.UseDefaultCredentials = false;
-
-            // Creatte the credentials:
+            // Create the credentials:
             //System.Net.NetworkCredential credentials = new System.Net.NetworkCredential(credentialUserName, pwd);
-            client.EnableSsl = false;
+            //client.EnableSsl = true;
             //client.Credentials = credentials;
-
+            
+            MailMessage mailMessage = new MailMessage();
+            MailAddress fromAddress = new MailAddress("SHUWallet@gmail.com");
+            mailMessage.From = fromAddress;
+            mailMessage.To.Add(message.Destination);
+            mailMessage.Body = message.Body;
+            mailMessage.IsBodyHtml = true;
+            mailMessage.Subject = message.Subject;
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+            SmtpServer.Port = 587;
+            SmtpServer.EnableSsl = true;
+            SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("SHUWallet@gmail.com", "SHUWallet123!");
+            SmtpServer.Send(mailMessage);
             // Create the message:
-            var mail = new System.Net.Mail.MailMessage(sentFrom, message.Destination);
-            mail.Subject = message.Subject;
-            mail.Body = message.Body;
+            //var mail = new System.Net.Mail.MailMessage(sentFrom, message.Destination);
+            //mail.Subject = message.Subject;
+            //mail.Body = message.Body;
 
             // Plug in your email service here to send an email.
             return Task.FromResult(0);
